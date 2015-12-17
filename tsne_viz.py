@@ -1,17 +1,22 @@
+import numpy as np
+from sklearn import preprocessing
+
 def tsne_viz(X,filename,S=2000,s=50,method='exact'):
     ''' T-SNE image embeding visualization'''
     ''' python version of the code provided by karpathy (http://cs.stanford.edu/people/karpathy/cnnembed/)'''
+    
     G = np.zeros((S,S,3))
     
     # Normalize data between 0 and 1
     min_max_scaler = preprocessing.MinMaxScaler() 
-    X_scaled = min_max_scaler.fit_transform(X_2d)
-
+    X_scaled = min_max_scaler.fit_transform(X)
+    
+    N = len(filename) #number of images
     
     if method=='exact':
-        for i in range(len(filename)):
+        for i in range(N):
             if (i%1000==0):
-                print "Iter",i,"from",Ntake
+                print "Iter",i,"from",N
 
             a = np.ceil(X_scaled[i,0]* (S-s))
             b = np.ceil(X_scaled[i,1]* (S-s))
@@ -46,7 +51,7 @@ def tsne_viz(X,filename,S=2000,s=50,method='exact'):
             b = abes[i,1]    
             xf = (a-1)/S
             yf = (b-1)/S
-            dd =np.sum(np.power((X[:,:] - (xf,yf)),2),1)
+            dd = np.sum(np.power((X[:,:] - (xf,yf)),2),1)
             dd[used==1]=np.inf
             di = dd.argmin() #find nearest image
 
@@ -57,3 +62,4 @@ def tsne_viz(X,filename,S=2000,s=50,method='exact'):
             G[a:a+s, b:b+s, :] = image;
 
     return G
+
